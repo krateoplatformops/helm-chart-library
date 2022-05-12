@@ -1,0 +1,25 @@
+{{- define "helm-chart-library.service" -}}
+{{- if .Values.service.create -}}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Release.Name }}-service
+  labels:
+    {{- include "helm.labels" . | nindent 4 }}
+spec:
+  {{- with .Values.service }}
+  type: {{ .type }}
+  ports:
+    - name: http
+      port: {{ .http.port }}
+      targetPort: {{ .http.targetPort | default 8080 }}
+    {{- if .ssh.enabled }}
+    - name: ssh
+      port: {{ .ssh.port }}
+      targetPort: 29418
+    {{- end }}
+  {{- end }}
+  selector:
+    {{- include "helm.selectorLabels" . | nindent 4 }}
+{{- end }}
+{{- end -}}
