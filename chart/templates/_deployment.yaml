@@ -24,6 +24,10 @@ spec:
       labels:
         {{- include "helm.labels" . | nindent 8 }}
     spec:
+      {{- with .Values.volumes }}
+      volumes:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
       terminationGracePeriodSeconds: 60
       serviceAccountName: {{ include "helm.serviceAccountName" . }}
       securityContext:
@@ -37,7 +41,7 @@ spec:
           volumeMounts:
             {{- range .Values.podContainerVolumes }}
             - name: {{ .name }}
-              mountPath: {{ .path }}
+              mountPath: {{ .mountPath }}
             {{- end }}
           ports:
             {{- range .Values.podContainerPorts }}
