@@ -34,6 +34,11 @@ spec:
             {{- toYaml .Values.securityContext | nindent 12 }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
+          volumeMounts:
+            {{- range .Values.podContainerVolumes }}
+            - name: {{ .name }}
+              mountPath: {{ .path }}
+            {{- end }}
           ports:
             {{- range .Values.podContainerPorts }}
             - name: {{ .name }}
