@@ -35,6 +35,8 @@ Common labels
 */}}
 {{- define "helm.labels" -}}
 helm.sh/chart: {{ include "helm.chart" . }}
+app.kubernetes.io/part-of: krateo
+app.kubernetes.io/component: {{ .Values.labelComponent }}
 {{ include "helm.selectorLabels" . }}
 {{- if .Chart.AppVersion }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
