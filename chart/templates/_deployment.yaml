@@ -24,6 +24,9 @@ spec:
       labels:
         {{- include "helm.labels" . | nindent 8 }}
     spec:
+      hostIPC: {{ .Values.hostIPC | default false }}
+      hostNetwork: {{ .Values.hostNetwork | default false }}
+      hostPID: {{ .Values.hostPID | default false }}
       {{- with .Values.volumes }}
       volumes:
         {{- toYaml . | nindent 8 }}
